@@ -46,3 +46,18 @@ Configuration
 -------------
 The configuration of dwm is done by creating a custom config.h
 and (re)compiling the source code.
+
+
+Add this
+---
+
+`sudo nvim /usr/share/xsessions/dwm.desktop`
+
+```
+[Desktop Entry]
+Encoding=UTF-8
+Name=dwm
+Comment=dwm window manager
+Exec=/usr/local/bin/dwm
+Type=Application
+```
