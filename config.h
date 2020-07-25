@@ -1,8 +1,6 @@
 #define XF86MonBrightnessDown 0x1008ff03
 #define XF86MonBrightnessUp 0x1008ff02
-#define XF86AudioRaiseVolume 0x1008ff02
-#define XF86AudioLowerVolume 0x1008ff02
-
+#include <X11/XF86keysym.h> 
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 10;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -72,9 +70,9 @@ static const char *termcmd[]  = { "alacritty", NULL };
 static const char *cmdbrightnessup[] = {"xbacklight","-inc","10",NULL};
 static const char *cmdbrightnessdown[] = {"xbacklight","-dec","5",NULL};
 //https://gist.github.com/palopezv/efd34059af6126ad970940bcc6a90f2e
-static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
-static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
-static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
+static const char *upvol[]   = { "amixer", "-q", "set", "Master", "5%+", NULL };
+static const char *downvol[] = { "amixer", "-q", "set", "Master", "5%-", NULL };
+static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute", "0", "toggle",  NULL };
 #include "shiftview.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -88,7 +86,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_p,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
+	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -122,8 +120,11 @@ static Key keys[] = {
   { MODKEY,                       XK_F11, spawn, {.v = downvol } },
 	{ MODKEY,                       XK_F9,  spawn, {.v = mutevol } },
 	{ MODKEY,                       XK_F12, spawn, {.v = upvol   } },
-	{0,				XF86MonBrightnessUp, spawn, {.v = cmdbrightnessup}},
-	{0,				XF86MonBrightnessDown, spawn, {.v = cmdbrightnessdown}},
+	{0,				                XF86MonBrightnessUp, spawn, {.v = cmdbrightnessup}},
+	{0,				                XF86MonBrightnessDown, spawn, {.v = cmdbrightnessdown}},
+  {0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol } },
+	{0,                       XF86XK_AudioMute, spawn, {.v = mutevol } },
+	{0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol   } },
 };
 
 /* button definitions */
