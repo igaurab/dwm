@@ -1,5 +1,7 @@
 #define XF86MonBrightnessDown 0x1008ff03
 #define XF86MonBrightnessUp 0x1008ff02
+#define XF86AudioRaiseVolume 0x1008ff02
+#define XF86AudioLowerVolume 0x1008ff02
 
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 10;        /* gaps between windows */
@@ -69,13 +71,16 @@ static const char *termcmd[]  = { "alacritty", NULL };
 
 static const char *cmdbrightnessup[] = {"xbacklight","-inc","10",NULL};
 static const char *cmdbrightnessdown[] = {"xbacklight","-dec","5",NULL};
-
+//https://gist.github.com/palopezv/efd34059af6126ad970940bcc6a90f2e
+static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
+static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
+static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
 #include "shiftview.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,	                XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_t,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -85,7 +90,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -113,9 +118,12 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{0,								XF86MonBrightnessUp, spawn, {.v = cmdbrightnessup}},
-	{0,								XF86MonBrightnessDown, spawn, {.v = cmdbrightnessdown}},
+	{ MODKEY|ShiftMask,             XK_c,      quit,           {0} },
+  { MODKEY,                       XK_F11, spawn, {.v = downvol } },
+	{ MODKEY,                       XK_F9,  spawn, {.v = mutevol } },
+	{ MODKEY,                       XK_F12, spawn, {.v = upvol   } },
+	{0,				XF86MonBrightnessUp, spawn, {.v = cmdbrightnessup}},
+	{0,				XF86MonBrightnessDown, spawn, {.v = cmdbrightnessdown}},
 };
 
 /* button definitions */

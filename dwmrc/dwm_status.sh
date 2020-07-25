@@ -31,5 +31,5 @@ print_date(){
 while true
 do
 	xsetroot -name "RAM: $(print_memory) Mb | $(print_wifi) |  Bat: $(print_bat)% | Date: $(print_date)"
-	sleep 60
+	sleep 1m
 done
