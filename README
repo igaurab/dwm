@@ -61,3 +61,8 @@ Comment=dwm window manager
 Exec=/usr/local/bin/dwm
 Type=Application
 ```
+
+Also create a symlink to the `autostart.sh` file inside `dwm/dwmrc`
+Note the folder structure should be `Apps/dwm/dwmrc/autostart.sh`
+This generates a dwm bar. Restores the wallpaper using nitrogen. Also, in some distros
+`acpi` is not installed by default. Make sure to install `acpi` as well.
